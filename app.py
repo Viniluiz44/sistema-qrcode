@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from openpyxl import Workbook, load_workbook
 from datetime import date
+import os
 
 app = Flask(__name__)
 arquivo_excel = "manutencoes.xlsx"
@@ -125,3 +126,5 @@ def consultar_historico():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))  # Pega a porta da variável de ambiente ou usa 5000
+    app.run(host='0.0.0.0', port=port)

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Equipamento</title>
+    <script src="https://unpkg.com/html5-qrcode/html5-qrcode.min.js"></script>
+</head>
+<body>
+    <h1>Cadastrar Equipamento</h1>
+    <form method="POST" action="/cadastrar_equipamento">
+        <label for="nome_equipamento">Nome do Equipamento:</label><br>
+        <input type="text" id="nome_equipamento" name="nome_equipamento" required><br><br>
+
+        <label for="qr_code">QR Code:</label><br>
+        <input type="text" id="qr_code" name="qr_code" required>
+        <button type="button" onclick="abrirLeitorQr()">Scan QR Code</button><br><br>
+
+        <div id="qr-reader" style="width:300px; display: none;"></div>
+        <div id="qr-reader-results"></div><br>
+
+        <button type="submit">Cadastrar Equipamento</button>
+    </form>
+
+    <script>
+        function abrirLeitorQr() {
+            const qrReader = document.getElementById('qr-reader');
+            qrReader.style.display = 'block'; // Mostrar o leitor de QR Code
+
+            const html5QrCode = new Html5Qrcode("qr-reader");
+
+            html5QrCode.start(
+                { facingMode: "environment" }, // Câmera traseira
+                {
+                    fps: 10, // Frames por segundo
+                    qrbox: { width: 250, height: 250 }
+                },
+                qrCodeMessage => {
+                    document.getElementById("qr_code").value = qrCodeMessage; // Preencher o input com o QR code
+                    html5QrCode.stop(); // Parar o leitor após a leitura
+                    qrReader.style.display = 'none'; // Esconder o leitor
+                },
+                errorMessage => {
+                    console.log(`Erro na leitura do QR Code: ${errorMessage}`);
+                }
+            ).catch(err => {
+                console.log(`Erro na inicialização do leitor: ${err}`);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Histórico de Manutenções</title>
+</head>
+<body>
+    <h1>Histórico de Manutenções para {{ historico.nome }}</h1>
+    <ul>
+        {% for manutencao in historico.manutencoes %}
+            <li>Data: {{ manutencao.data }} - Descrição: {{ manutencao.descricao }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/">Voltar</a>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Histórico</title>
+    <script src="https://unpkg.com/html5-qrcode/html5-qrcode.min.js"></script>
+</head>
+<body>
+    <h1>Consultar Histórico por QR Code</h1>
+    <form method="POST" action="/consultar_historico">
+        <label for="qr_code">QR Code:</label><br>
+        <input type="text" id="qr_code" name="qr_code" required>
+        <button type="button" onclick="abrirLeitorQr()">Scan QR Code</button><br><br>
+
+        <div id="qr-reader" style="width:300px; display: none;"></div>
+        <div id="qr-reader-results"></div><br>
+
+        <button type="submit">Consultar Histórico</button>
+    </form>
+
+    <script>
+        function abrirLeitorQr() {
+            const qrReader = document.getElementById('qr-reader');
+            qrReader.style.display = 'block';
+
+            const html5QrCode = new Html5Qrcode("qr-reader");
+
+            html5QrCode.start(
+                { facingMode: "environment" }, // Câmera traseira
+                {
+                    fps: 10,
+                    qrbox: { width: 250, height: 250 }
+                },
+                qrCodeMessage => {
+                    document.getElementById("qr_code").value = qrCodeMessage;
+                    html5QrCode.stop();
+                    qrReader.style.display = 'none';
+                },
+                errorMessage => {
+                    console.log(`Erro na leitura do QR Code: ${errorMessage}`);
+                }
+            ).catch(err => {
+                console.log(`Erro na inicialização do leitor: ${err}`);
+            });
+        }
+    </script>
+</body>
+</html>
